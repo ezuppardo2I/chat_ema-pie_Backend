@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:aws_client/dynamo_db_2012_08_10.dart';
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
@@ -25,27 +27,30 @@ Future<AwsApiGatewayResponse> getUser(
 
     if (results.item == null) {
       return AwsApiGatewayResponse.fromJson({
-        "status": "ok",
-        "content": "Utente non trovato",
+        "statusCode": 404,
         "headers": corsHeaders,
+        "body": jsonEncode({"message": "Utente non trovato"}),
       });
     }
 
     final user = User.fromJson(unmarshal(results.item!));
 
-    return AwsApiGatewayResponse.fromJson(
-        {'status': 'ok', 'content': user.toJson(), 'headers': corsHeaders});
+    return AwsApiGatewayResponse.fromJson({
+      "statusCode": 200,
+      "headers": corsHeaders,
+      "body": jsonEncode(user.toJson()),
+    });
   } catch (error, stacktrace) {
     print("Error: $error");
     print("stacktrace $stacktrace");
 
     return AwsApiGatewayResponse.fromJson({
-      "status": "ko",
-      "content": {
-        "error": error.toString(),
-        "stacktrace": stacktrace.toString()
-      },
+      "statusCode": 500,
       "headers": corsHeaders,
+      "body": jsonEncode({
+        "error": error.toString(),
+        "stacktrace": stacktrace.toString(),
+      }),
     });
   }
 }
