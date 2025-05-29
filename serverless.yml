@@ -1,0 +1,21 @@
+service: p-experiment-backend
+frameworkVersion: 3
+provider:
+  name: aws
+  deploymentMethod: direct
+  runtime: provided.al2
+  region: eu-west-2
+  memorySize: 1024
+
+package:
+  individually: true
+  artifact: build/bootstrap.zip
+
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-prune-plugin
+
+custom:
+  prune:
+    automatic: true
+    number: 3
