@@ -25,13 +25,10 @@ functions:
     handler: main.putUser
     events:
       - http:
+          cors: true
           path: /user
           method: PUT
-          cors:
-            origin: "*"
-            headers:
-              - Content-Type
-              - Content-Encoding
+
     iamRoleStatements:
       - Effect: "Allow"
         Action:
