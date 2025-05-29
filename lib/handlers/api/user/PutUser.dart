@@ -1,6 +1,5 @@
 import 'package:aws_client/cognito_identity_provider_2016_04_18.dart';
 import 'package:aws_client/dynamo_db_2012_08_10.dart';
-import 'package:aws_client/elasti_cache_2015_02_02.dart';
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
 import 'package:dart_template/handlers/models/DTO/UserPutRequest.dart';
@@ -19,9 +18,21 @@ Future<AwsApiGatewayResponse> putUser(
 
     final api = CognitoIdentityProvider(region: 'eu-west-2');
 
-    final cognitoPool = 'eu-west-2_YBmvyH80J';
+    final cognitoPool = 'eu-west-2_J3U1r0lW1';
 
     if (request.email.isNotEmpty && request.username.isNotEmpty) {
+      final userExist = await db.getItem(
+        tableName: "chat-users",
+        key: marshall({"email": request.email}),
+      );
+
+      if (userExist.item != null) {
+        return AwsApiGatewayResponse.fromJson({
+          "status": "ko",
+          "content": "L'utente con questa email esiste già",
+        });
+      }
+
       final result = await api.adminCreateUser(
         userPoolId: cognitoPool,
         username: request.email,
@@ -36,22 +47,17 @@ Future<AwsApiGatewayResponse> putUser(
           userID: userID,
           username: request.username,
           email: request.email,
-          avatarImage: request.avatarImage,
+          avatarImage: request.avatarImage ??
+              "https://chat-avatar-bucket.s3.eu-west-2.amazonaws.com/image/placeholder.jpg",
         );
         await db.putItem(
           item: marshall(newUser.toJson()),
-          tableName: "users-ema",
+          tableName: "chat-users",
         );
       }
     } else {
       throw Exception("Errore, l'email inserita non è valida");
     }
-
-    // await api.adminSetUserPassword(
-    //   password: 'newpassword',
-    //   userPoolId: cognitoPool,
-    //   username: request.email,
-    // );
 
     api.close();
 

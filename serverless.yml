@@ -21,14 +21,24 @@ custom:
     number: 3
 
 function:
-  status:
-    handler: main.status
+  putUser:
+    handler: main.putUser
     events:
       - http:
-          path: /status
-          method: GET
+          path: /user
+          method: PUT
           cors:
             origin: "*"
             headers:
               - Content-Type
               - Content-Encoding
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
+      - Effect: "Allow"
+        Action:
+          - cognito-idp:AdminCreateUser
+        Resource: arn:aws:cognito-idp:eu-west-2:737830503619:userpool/eu-west-2_J3U1r0lW1
