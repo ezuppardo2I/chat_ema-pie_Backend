@@ -19,3 +19,16 @@ custom:
   prune:
     automatic: true
     number: 3
+
+function:
+  status:
+    handler: main.status
+    events:
+      - http:
+          path: /status
+          method: GET
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - Content-Encoding
