@@ -10,6 +10,12 @@ Future<AwsApiGatewayResponse> putUser(
   Context context,
   AwsApiGatewayEvent event,
 ) async {
+  final corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type,Content-Encoding',
+    'Access-Control-Allow-Methods': 'OPTIONS,PUT,POST,GET',
+  };
+
   try {
     final db = DynamoDB(region: context.region!);
 
@@ -45,6 +51,7 @@ Future<AwsApiGatewayResponse> putUser(
     return AwsApiGatewayResponse.fromJson({
       "status": "ok",
       "content": "Utente inserito correttamente",
+      "headers": corsHeaders,
     });
   } catch (error, stacktrace) {
     print("Error: $error");
@@ -52,7 +59,11 @@ Future<AwsApiGatewayResponse> putUser(
 
     return AwsApiGatewayResponse.fromJson({
       "status": "ko",
-      "content": {"error": error, "stacktrace": stacktrace},
+      "content": {
+        "error": error.toString(),
+        "stacktrace": stacktrace.toString()
+      },
+      "headers": corsHeaders,
     });
   }
 }
