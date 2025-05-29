@@ -1,4 +1,4 @@
-service: p-experiment-backend
+service: chat_ema-pie_backend
 frameworkVersion: 3
 provider:
   name: aws

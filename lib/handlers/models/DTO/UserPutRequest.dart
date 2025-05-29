@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'UserPutRequest.g.dart';
+part 'userPutRequest.g.dart';
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class UserPutRequest {

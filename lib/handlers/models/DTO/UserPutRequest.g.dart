@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'UserPutRequest.dart';
+part of 'userPutRequest.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

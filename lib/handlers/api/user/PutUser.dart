@@ -2,10 +2,10 @@ import 'package:aws_client/cognito_identity_provider_2016_04_18.dart';
 import 'package:aws_client/dynamo_db_2012_08_10.dart';
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
-import 'package:dart_template/handlers/models/DTO/UserPutRequest.dart';
+import 'package:dart_template/handlers/models/DTO/userPutRequest.dart';
 import 'package:dart_template/marshall.dart';
 import 'dart:convert';
-import 'package:dart_template/handlers/models/User.dart';
+import 'package:dart_template/handlers/models/user.dart';
 
 Future<AwsApiGatewayResponse> putUser(
   Context context,

@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_function_declarations_over_variables
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
-import 'package:dart_template/handlers/api/user/PutUser.dart';
+import 'package:dart_template/handlers/api/user/putUser.dart';
 
 void main() async {
   Runtime()
