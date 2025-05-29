@@ -38,7 +38,6 @@ Future<AwsApiGatewayResponse> putUser(
 
     final newUser = User(
       userID: request.userID,
-      username: request.username,
       email: request.email,
       avatarImage: request.avatarImage ??
           "https://chat-avatar-bucket.s3.eu-west-2.amazonaws.com/image/placeholder.jpg",
