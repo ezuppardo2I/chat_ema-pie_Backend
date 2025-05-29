@@ -20,7 +20,7 @@ custom:
     automatic: true
     number: 3
 
-function:
+functions:
   putUser:
     handler: main.putUser
     events:
