@@ -26,7 +26,7 @@ Future<AwsApiGatewayResponse> putUser(
         temporaryPassword: r'Pass123$$',
         userAttributes: [
           AttributeType(name: 'email', value: request.email),
-          AttributeType(name: 'email_verified', value: 'false'),
+          AttributeType(name: 'email_verified', value: 'true'),
         ],
         desiredDeliveryMediums: [DeliveryMediumType.email],
         forceAliasCreation: false);
