@@ -21,12 +21,16 @@ Future<AwsApiGatewayResponse> putUser(
     final cognitoPool = 'eu-west-2_J3U1r0lW1';
 
     if (request.email.isNotEmpty && request.username.isNotEmpty) {
-      final userExist = await db.getItem(
+      final userExist = await db.query(
         tableName: "chat-users",
-        key: marshall({"email": request.email}),
+        indexName: "email",
+        keyConditionExpression: "email = :email",
+        expressionAttributeValues: {
+          ":email": AttributeValue(s: request.email),
+        },
       );
 
-      if (userExist.item != null) {
+      if (userExist.items != null && userExist.items!.isNotEmpty) {
         return AwsApiGatewayResponse.fromJson({
           "status": "ko",
           "content": "L'utente con questa email esiste già",
@@ -58,7 +62,6 @@ Future<AwsApiGatewayResponse> putUser(
     } else {
       throw Exception("Errore, l'email inserita non è valida");
     }
-
     api.close();
 
     return AwsApiGatewayResponse.fromJson({
