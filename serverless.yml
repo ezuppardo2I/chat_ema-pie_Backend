@@ -40,3 +40,21 @@ functions:
         Resource:
           - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
           - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users/index/email-index
+
+  getUser:
+    handler: main.getUser
+    events:
+      - http:
+          path: /user/{userID}
+          method: GET
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - Content-Encoding
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:GetItem
+        Resource:
+          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
