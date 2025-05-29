@@ -25,10 +25,9 @@ Future<AwsApiGatewayResponse> putUser(
     );
 
     if (existingUser.items != null && existingUser.items!.isNotEmpty) {
-      return AwsApiGatewayResponse.fromJson({
-        "status": "ko",
-        "content": "Utente già esistente con questa email",
-      });
+      throw Exception(
+        "Un utente con questa email esiste già, per favore usa un'altra email.",
+      );
     }
 
     final newUser = User(
