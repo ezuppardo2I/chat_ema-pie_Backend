@@ -39,7 +39,7 @@ functions:
           - dynamodb:Query
         Resource:
           - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
-          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users/index/email
+          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users/index/email-index
       - Effect: "Allow"
         Action:
           - cognito-idp:AdminCreateUser
