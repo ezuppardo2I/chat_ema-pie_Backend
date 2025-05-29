@@ -25,7 +25,7 @@ Future<AwsApiGatewayResponse> getUser(
 
     if (results.item == null) {
       return AwsApiGatewayResponse.fromJson({
-        "status": "ko",
+        "status": "ok",
         "content": "Utente non trovato",
         "headers": corsHeaders,
       });
@@ -34,7 +34,7 @@ Future<AwsApiGatewayResponse> getUser(
     final user = User.fromJson(unmarshal(results.item!));
 
     return AwsApiGatewayResponse.fromJson(
-        {'status': 'ok', 'content': user.toJson()});
+        {'status': 'ok', 'content': user.toJson(), 'headers': corsHeaders});
   } catch (error, stacktrace) {
     print("Error: $error");
     print("stacktrace $stacktrace");
