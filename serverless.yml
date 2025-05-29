@@ -1,4 +1,4 @@
-service: chat_ema-pie_backend
+service: chat-ema-pie-backend
 frameworkVersion: 3
 provider:
   name: aws
