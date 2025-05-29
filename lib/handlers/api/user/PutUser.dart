@@ -20,30 +20,20 @@ Future<AwsApiGatewayResponse> putUser(
 
     final cognitoPool = 'eu-west-2_J3U1r0lW1';
 
-    if (request.email.isNotEmpty && request.username.isNotEmpty) {
-      final userExist = await db.query(
-        tableName: "chat-users",
-        indexName: "email-index",
-        keyConditionExpression: "email = :email",
-        expressionAttributeValues: {
-          ":email": AttributeValue(s: request.email),
-        },
-      );
-
-      if (userExist.items != null && userExist.items!.isNotEmpty) {
-        return AwsApiGatewayResponse.fromJson({
-          "status": "ko",
-          "content": "L'utente con questa email esiste già",
-        });
-      }
-    }
-
     final result = await api.adminCreateUser(
-      userPoolId: cognitoPool,
-      username: request.email,
-      temporaryPassword: r'Pass123$$',
-      userAttributes: [AttributeType(name: 'email', value: request.email)],
-    );
+        userPoolId: cognitoPool,
+        username: request.email,
+        temporaryPassword: r'Pass123$$',
+        userAttributes: [
+          AttributeType(name: 'email', value: request.email),
+          AttributeType(name: 'email_verified', value: 'false'),
+        ],
+        desiredDeliveryMediums: [DeliveryMediumType.email],
+        forceAliasCreation: false);
+
+    if (result.user == null) {
+      throw Exception("Errore, l'email inserita non è valida");
+    }
 
     final userID = result.user!.username;
 
