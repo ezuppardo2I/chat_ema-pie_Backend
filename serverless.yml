@@ -36,7 +36,7 @@ functions:
       - Effect: "Allow"
         Action:
           - dynamodb:PutItem
-          - dynamodb:GetItem
+          - dynamodb:Query
         Resource: arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
       - Effect: "Allow"
         Action:
