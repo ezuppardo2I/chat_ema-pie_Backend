@@ -23,7 +23,7 @@ Future<AwsApiGatewayResponse> putUser(
     if (request.email.isNotEmpty && request.username.isNotEmpty) {
       final userExist = await db.query(
         tableName: "chat-users",
-        indexName: "email",
+        indexName: "email-index",
         keyConditionExpression: "email = :email",
         expressionAttributeValues: {
           ":email": AttributeValue(s: request.email),
@@ -36,29 +36,29 @@ Future<AwsApiGatewayResponse> putUser(
           "content": "L'utente con questa email esiste già",
         });
       }
+    }
 
-      final result = await api.adminCreateUser(
-        userPoolId: cognitoPool,
-        username: request.email,
-        temporaryPassword: r'Pass123$$',
-        userAttributes: [AttributeType(name: 'email', value: request.email)],
+    final result = await api.adminCreateUser(
+      userPoolId: cognitoPool,
+      username: request.email,
+      temporaryPassword: r'Pass123$$',
+      userAttributes: [AttributeType(name: 'email', value: request.email)],
+    );
+
+    final userID = result.user!.username;
+
+    if (userID != null) {
+      final newUser = User(
+        userID: userID,
+        username: request.username,
+        email: request.email,
+        avatarImage: request.avatarImage ??
+            "https://chat-avatar-bucket.s3.eu-west-2.amazonaws.com/image/placeholder.jpg",
       );
-
-      final userID = result.user!.username;
-
-      if (userID != null) {
-        final newUser = User(
-          userID: userID,
-          username: request.username,
-          email: request.email,
-          avatarImage: request.avatarImage ??
-              "https://chat-avatar-bucket.s3.eu-west-2.amazonaws.com/image/placeholder.jpg",
-        );
-        await db.putItem(
-          item: marshall(newUser.toJson()),
-          tableName: "chat-users",
-        );
-      }
+      await db.putItem(
+        item: marshall(newUser.toJson()),
+        tableName: "chat-users",
+      );
     } else {
       throw Exception("Errore, l'email inserita non è valida");
     }
