@@ -29,7 +29,7 @@ Future<AwsApiGatewayResponse> getUser(
       return AwsApiGatewayResponse.fromJson({
         "statusCode": 404,
         "headers": corsHeaders,
-        "body": jsonEncode({"message": "Utente non trovato"}),
+        "body": "Utente non trovato",
       });
     }
 
@@ -38,7 +38,7 @@ Future<AwsApiGatewayResponse> getUser(
     return AwsApiGatewayResponse.fromJson({
       "statusCode": 200,
       "headers": corsHeaders,
-      "body": jsonEncode(user.toJson()),
+      "body": user.toJson(),
     });
   } catch (error, stacktrace) {
     print("Error: $error");
