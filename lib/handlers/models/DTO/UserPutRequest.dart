@@ -8,11 +8,12 @@ class UserPutRequest {
   String email;
   String username;
   String? avatarImage;
-  UserPutRequest(
-      {required this.email,
-      required this.username,
-      this.avatarImage,
-      required this.userID});
+  UserPutRequest({
+    required this.userID,
+    required this.email,
+    required this.username,
+    this.avatarImage,
+  });
 
   factory UserPutRequest.fromJson(Map<String, dynamic> json) =>
       _$UserPutRequestFromJson(json);

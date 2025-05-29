@@ -20,7 +20,7 @@ Future<AwsApiGatewayResponse> putUser(
       indexName: "email-index",
       keyConditionExpression: "email = :email",
       expressionAttributeValues: {
-        ":userID": AttributeValue(s: request.email),
+        ":email": AttributeValue(s: request.email),
       },
     );
 
