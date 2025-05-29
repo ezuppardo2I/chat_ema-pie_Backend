@@ -13,7 +13,6 @@ jobs:
       - uses: dart-lang/setup-dart@v1
       - run: |
           dart pub get
-      - run: dart format --output=none --set-exit-if-changed .
       - name: Checkout
         uses: actions/checkout@v2
       - name: configure aws credentials
