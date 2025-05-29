@@ -6,12 +6,21 @@ import 'package:dart_template/handlers/models/DTO/UserPutRequest.dart';
 import 'package:dart_template/marshall.dart';
 import 'dart:convert';
 import 'package:dart_template/handlers/models/User.dart';
+import 'package:password_generator/password_generator.dart';
 
 Future<AwsApiGatewayResponse> putUser(
   Context context,
   AwsApiGatewayEvent event,
 ) async {
   try {
+    final generator = PasswordGenerator(
+      length: 12,
+      hasNumbers: true,
+      hasCapitalLetters: true,
+      hasSmallLetters: true,
+      hasSymbols: true,
+    );
+
     final db = DynamoDB(region: context.region!);
 
     final request = UserPutRequest.fromJson(jsonDecode(event.body!));
@@ -23,7 +32,7 @@ Future<AwsApiGatewayResponse> putUser(
     final result = await api.adminCreateUser(
         userPoolId: cognitoPool,
         username: request.email,
-        temporaryPassword: r'Pass123$$',
+        temporaryPassword: generator.generatePassword(),
         userAttributes: [
           AttributeType(name: 'email', value: request.email),
           AttributeType(name: 'email_verified', value: 'true'),

@@ -20,6 +20,7 @@ dependencies:
   shelf:
   shelf_router:
   uuid: ^3.0.7
+  password_generator: ^1.0.0
 
 dev_dependencies:
   build_runner: ^2.3.3
