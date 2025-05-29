@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'UserPutRequest.dart';
+part of 'User.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserPutRequest _$UserPutRequestFromJson(Map<String, dynamic> json) =>
-    UserPutRequest(
-      email: json['email'] as String,
+User _$UserFromJson(Map<String, dynamic> json) => User(
+      userID: json['userID'] as String,
       username: json['username'] as String,
+      email: json['email'] as String,
       avatarImage: json['avatarImage'] as String?,
     );
 
-Map<String, dynamic> _$UserPutRequestToJson(UserPutRequest instance) =>
-    <String, dynamic>{
-      'email': instance.email,
+Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+      'userID': instance.userID,
       'username': instance.username,
+      'email': instance.email,
       if (instance.avatarImage case final value?) 'avatarImage': value,
     };

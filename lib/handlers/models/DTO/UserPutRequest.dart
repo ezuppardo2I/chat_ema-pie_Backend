@@ -6,7 +6,9 @@ part 'UserPutRequest.g.dart';
 class UserPutRequest {
   String email;
   String username;
-  UserPutRequest({required this.email, required this.username});
+  String? avatarImage;
+  UserPutRequest(
+      {required this.email, required this.username, this.avatarImage});
 
   factory UserPutRequest.fromJson(Map<String, dynamic> json) =>
       _$UserPutRequestFromJson(json);
