@@ -3,6 +3,7 @@ import 'package:aws_client/dynamo_db_2012_08_10.dart';
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
 import 'package:dart_template/marshall.dart';
+import 'package:dart_template/unmarshal.dart';
 
 Future<AwsApiGatewayResponse> getUsers(
   Context context,
@@ -25,13 +26,12 @@ Future<AwsApiGatewayResponse> getUsers(
         exclusiveStartKey:
             lastEvalueted != null ? marshall({"userID": lastEvalueted}) : null);
 
+    final users = results.items?.map((item) => unmarshal(item)).toList() ?? [];
+
     return AwsApiGatewayResponse(
       statusCode: 200,
       headers: corsHeaders,
-      body: jsonEncode({
-        "status": "ok",
-        "data": results.toJson(),
-      }),
+      body: jsonEncode({"status": "ok", "data": users}),
     );
   } catch (error, stacktrace) {
     print("Error: $error");
