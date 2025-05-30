@@ -6,6 +6,7 @@ part 'UserPutRequest.g.dart';
 class UserPutRequest {
   String userID;
   String email;
+  Set<String> lobbiesIDs = {};
 
   String? avatarImage;
   UserPutRequest({
