@@ -1,7 +1,7 @@
 import 'package:aws_client/dynamo_db_2012_08_10.dart';
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
-import 'package:dart_template/handlers/models/DTO/UserPatchRequest.dart';
+import 'package:dart_template/handlers/models/DTO/UserPatchLobbiesRequest.dart';
 import 'package:dart_template/marshall.dart';
 import 'dart:convert';
 
@@ -18,7 +18,7 @@ Future<AwsApiGatewayResponse> patchUserLobbies(
   try {
     final db = DynamoDB(region: context.region!);
 
-    final request = UserPatchRequest.fromJson(jsonDecode(event.body!));
+    final request = UserPatchLobbiesRequest.fromJson(jsonDecode(event.body!));
 
     await db.updateItem(
       key: marshall({"userId": request.userID}),
