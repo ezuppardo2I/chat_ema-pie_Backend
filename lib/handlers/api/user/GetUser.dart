@@ -20,37 +20,57 @@ Future<AwsApiGatewayResponse> getUser(
   try {
     final db = DynamoDB(region: context.region!);
 
-    final userID = event.pathParameters!['userID'];
+    final userID = event.pathParameters?['userID'];
+
+    if (userID == null) {
+      return AwsApiGatewayResponse(
+        statusCode: 400,
+        headers: corsHeaders,
+        body: jsonEncode({
+          "status": "ko",
+          "message": "Parametro userID mancante",
+        }),
+      );
+    }
 
     final results = await db.getItem(
-        key: marshall({"userID": userID}), tableName: "chat-users");
+      key: marshall({"userID": userID}),
+      tableName: "chat-users",
+    );
 
     if (results.item == null) {
-      return AwsApiGatewayResponse.fromJson({
-        "statusCode": 404,
-        "headers": corsHeaders,
-        "body": "Utente non trovato",
-      });
+      return AwsApiGatewayResponse(
+        statusCode: 404,
+        headers: corsHeaders,
+        body: jsonEncode({
+          "status": "ko",
+          "message": "Utente non trovato",
+        }),
+      );
     }
 
     final user = User.fromJson(unmarshal(results.item!));
 
-    return AwsApiGatewayResponse.fromJson({
-      "statusCode": 200,
-      "headers": corsHeaders,
-      "body": user.toJson(),
-    });
+    return AwsApiGatewayResponse(
+      statusCode: 200,
+      headers: corsHeaders,
+      body: jsonEncode({
+        "status": "ok",
+        "data": user.toJson(),
+      }),
+    );
   } catch (error, stacktrace) {
     print("Error: $error");
     print("stacktrace $stacktrace");
 
-    return AwsApiGatewayResponse.fromJson({
-      "statusCode": 500,
-      "headers": corsHeaders,
-      "body": jsonEncode({
+    return AwsApiGatewayResponse(
+      statusCode: 500,
+      headers: corsHeaders,
+      body: jsonEncode({
+        "status": "ko",
         "error": error.toString(),
         "stacktrace": stacktrace.toString(),
       }),
-    });
+    );
   }
 }
