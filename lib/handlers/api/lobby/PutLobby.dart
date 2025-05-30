@@ -37,6 +37,7 @@ Future<AwsApiGatewayResponse> putLobby(
       body: jsonEncode({
         "status": "ok",
         "content": "Lobby creata con successo",
+        "lobbyID": lobbyID,
       }),
       headers: corsHeaders,
     );
