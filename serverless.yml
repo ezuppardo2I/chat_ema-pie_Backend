@@ -55,3 +55,16 @@ functions:
           - dynamodb:GetItem
         Resource:
           - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
+
+  connectToIoT:
+    handler: main.iotConnection
+    events:
+      - http:
+          path: iot
+          method: POST
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - iot:AttachPolicy
+        Resource: "*"
