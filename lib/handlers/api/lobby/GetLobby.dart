@@ -7,7 +7,7 @@ import 'package:dart_template/handlers/models/Lobby.dart';
 import 'package:dart_template/marshall.dart';
 import 'package:dart_template/unmarshal.dart';
 
-Future<AwsApiGatewayResponse> getUser(
+Future<AwsApiGatewayResponse> getLobby(
   Context context,
   AwsApiGatewayEvent event,
 ) async {
