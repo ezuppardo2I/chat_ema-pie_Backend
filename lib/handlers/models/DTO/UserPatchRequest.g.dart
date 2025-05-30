@@ -11,9 +11,8 @@ UserPatchRequest _$UserPatchRequestFromJson(Map<String, dynamic> json) =>
       userID: json['userID'] as String,
       email: json['email'] as String,
       avatarImage: json['avatarImage'] as String,
-      lobbiesIDs: (json['lobbiesIDs'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      lobbiesIDs:
+          (json['lobbiesIDs'] as List<dynamic>).map((e) => e as String).toSet(),
     );
 
 Map<String, dynamic> _$UserPatchRequestToJson(UserPatchRequest instance) =>
@@ -21,5 +20,5 @@ Map<String, dynamic> _$UserPatchRequestToJson(UserPatchRequest instance) =>
       'userID': instance.userID,
       'email': instance.email,
       'avatarImage': instance.avatarImage,
-      'lobbiesIDs': instance.lobbiesIDs,
+      'lobbiesIDs': instance.lobbiesIDs.toList(),
     };

@@ -5,7 +5,7 @@ part 'UserPatchLobbiesRequest.g.dart';
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class UserPatchLobbiesRequest {
   String userID;
-  List<String> lobbiesIDs;
+  Set<String> lobbiesIDs;
 
   UserPatchLobbiesRequest({
     required this.userID,

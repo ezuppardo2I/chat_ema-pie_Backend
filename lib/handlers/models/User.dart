@@ -8,7 +8,7 @@ class User {
 
   String email;
   String? avatarImage;
-  List<String>? lobbiesIDs;
+  Set<String>? lobbiesIDs;
 
   User({
     required this.userID,

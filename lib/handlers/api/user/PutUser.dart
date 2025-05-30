@@ -46,7 +46,7 @@ Future<AwsApiGatewayResponse> putUser(
         email: request.email,
         avatarImage: request.avatarImage ??
             "https://chat-avatar-bucket.s3.eu-west-2.amazonaws.com/image/placeholder.jpg",
-        lobbiesIDs: []);
+        lobbiesIDs: {});
 
     await db.putItem(
       item: marshall(newUser.toJson()),
