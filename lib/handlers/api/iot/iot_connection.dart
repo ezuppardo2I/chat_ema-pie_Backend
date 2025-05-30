@@ -18,7 +18,7 @@ Future<AwsApiGatewayResponse> iotConnection(
     final iot = IoT(region: "eu-west-2");
 
     await iot.attachPolicy(
-      policyName: "Iot",
+      policyName: "EmaIotPolicy",
       target: request.cognitoIdentityID!,
     );
 
