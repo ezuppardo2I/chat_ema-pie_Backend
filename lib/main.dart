@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_function_declarations_over_variables
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:dart_template/handlers/api/iot/iot_connection.dart';
+import 'package:dart_template/handlers/api/lobby/PutLobby.dart';
 import 'package:dart_template/handlers/api/user/GetUser.dart';
 import 'package:dart_template/handlers/api/user/GetUsers.dart';
 import 'package:dart_template/handlers/api/user/PatchUser.dart';
@@ -13,5 +14,6 @@ void main() async {
     ..registerHandler<AwsApiGatewayEvent>("main.getUsers", getUsers)
     ..registerHandler<AwsApiGatewayEvent>("main.iotConnection", iotConnection)
     ..registerHandler<AwsApiGatewayEvent>("main.patchUserLobbies", patchUser)
+    ..registerHandler<AwsApiGatewayEvent>("main.putLobby", putLobby)
     ..invoke();
 }

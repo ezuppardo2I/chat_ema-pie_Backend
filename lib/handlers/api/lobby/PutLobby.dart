@@ -7,7 +7,7 @@ import 'package:dart_template/marshall.dart';
 import 'dart:convert';
 import 'package:nanoid/nanoid.dart';
 
-Future<AwsApiGatewayResponse> putUser(
+Future<AwsApiGatewayResponse> putLobby(
   Context context,
   AwsApiGatewayEvent event,
 ) async {
