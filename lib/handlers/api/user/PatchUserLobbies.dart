@@ -23,11 +23,9 @@ Future<AwsApiGatewayResponse> patchUserLobbies(
     await db.updateItem(
       key: marshall({"userId": request.userID}),
       tableName: "chat-users",
-      updateExpression:
-          "SET lobbiesIDs = list_append(if_not_exists(lobbiesIDs, :empty_list), :new_lobbies)",
+      updateExpression: "ADD lobbiesIDs :new_lobbies",
       expressionAttributeValues: marshall({
         ":new_lobbies": request.lobbiesIDs,
-        ":empty_list": [],
       }),
     );
 
