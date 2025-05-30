@@ -8,11 +8,13 @@ class User {
 
   String email;
   String? avatarImage;
+  List<String>? lobbiesIDs;
 
   User({
     required this.userID,
     required this.email,
     this.avatarImage,
+    this.lobbiesIDs,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

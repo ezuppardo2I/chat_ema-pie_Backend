@@ -68,3 +68,33 @@ functions:
         Action:
           - iot:AttachPolicy
         Resource: "*"
+
+  putMessage:
+    handler: main.putMessage
+    events:
+      - http:
+          cors: true
+          path: /message
+          method: PUT
+
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:PutItem
+        Resource:
+          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-messages
+
+  putLobby:
+    handler: main.putLobby
+    events:
+      - http:
+          cors: true
+          path: /lobby
+          method: PUT
+
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:PutItem
+        Resource:
+          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-messages
