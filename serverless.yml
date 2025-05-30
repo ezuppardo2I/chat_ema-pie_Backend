@@ -56,6 +56,24 @@ functions:
         Resource:
           - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
 
+  getUsers:
+    handler: main.getUsers
+    events:
+      - http:
+          path: /user
+          method: GET
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - Content-Encoding
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:Scan
+        Resource:
+          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
+
   patchUser:
     handler: main.patchUser
     events:
