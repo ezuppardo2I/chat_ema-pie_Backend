@@ -1,13 +1,13 @@
+import 'dart:convert';
+
 import 'package:aws_client/dynamo_db_2012_08_10.dart';
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
-import 'package:dart_template/handlers/models/DTO/LobbyPutRequest.dart';
 import 'package:dart_template/handlers/models/Lobby.dart';
 import 'package:dart_template/marshall.dart';
-import 'dart:convert';
-import 'package:nanoid/nanoid.dart';
+import 'package:dart_template/unmarshal.dart';
 
-Future<AwsApiGatewayResponse> putLobby(
+Future<AwsApiGatewayResponse> getUser(
   Context context,
   AwsApiGatewayEvent event,
 ) async {
@@ -20,25 +20,44 @@ Future<AwsApiGatewayResponse> putLobby(
   try {
     final db = DynamoDB(region: context.region!);
 
-    final request = LobbyPutRequest.fromJson(jsonDecode(event.body!));
+    final lobbyID = event.pathParameters?['lobbyID'];
 
-    final lobbyID = nanoid();
+    if (lobbyID == null) {
+      return AwsApiGatewayResponse(
+        statusCode: 400,
+        headers: corsHeaders,
+        body: jsonEncode({
+          "status": "ko",
+          "message": "Parametro lobbyID mancante",
+        }),
+      );
+    }
 
-    final newLobby =
-        Lobby(lobbyID: lobbyID, name: request.name, userIDs: request.userIDs);
-
-    await db.putItem(
-      item: marshall(newLobby.toJson()),
+    final results = await db.getItem(
+      key: marshall({"lobbyID": lobbyID}),
       tableName: "chat-lobbies",
     );
 
+    if (results.item == null) {
+      return AwsApiGatewayResponse(
+        statusCode: 404,
+        headers: corsHeaders,
+        body: jsonEncode({
+          "status": "ko",
+          "message": "Lobby non trovata",
+        }),
+      );
+    }
+
+    final lobby = Lobby.fromJson(unmarshal(results.item!));
+
     return AwsApiGatewayResponse(
       statusCode: 200,
+      headers: corsHeaders,
       body: jsonEncode({
         "status": "ok",
-        "content": "Lobby creata con successo",
+        "data": lobby.toJson(),
       }),
-      headers: corsHeaders,
     );
   } catch (error, stacktrace) {
     print("Error: $error");
@@ -46,14 +65,12 @@ Future<AwsApiGatewayResponse> putLobby(
 
     return AwsApiGatewayResponse(
       statusCode: 500,
+      headers: corsHeaders,
       body: jsonEncode({
         "status": "ko",
-        "content": {
-          "error": error.toString(),
-          "stacktrace": stacktrace.toString(),
-        },
+        "error": error.toString(),
+        "stacktrace": stacktrace.toString(),
       }),
-      headers: corsHeaders,
     );
   }
 }
