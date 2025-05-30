@@ -1,7 +1,7 @@
 import 'package:aws_client/dynamo_db_2012_08_10.dart';
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
-import 'package:dart_template/handlers/models/DTO/UserPutRequest.dart';
+import 'package:dart_template/handlers/models/DTO/LobbyPutRequest.dart';
 import 'package:dart_template/marshall.dart';
 import 'dart:convert';
 import 'package:dart_template/handlers/models/User.dart';
@@ -19,7 +19,9 @@ Future<AwsApiGatewayResponse> putUser(
   try {
     final db = DynamoDB(region: context.region!);
 
-    final request = UserPutRequest.fromJson(jsonDecode(event.body!));
+    final request = LobbyPutRequest.fromJson(jsonDecode(event.body!));
+
+    final lobbyID = nanoid();
 
     final existingUser = await db.query(
       tableName: "chat-users",
@@ -78,3 +80,5 @@ Future<AwsApiGatewayResponse> putUser(
     );
   }
 }
+
+void nanoid() {}
