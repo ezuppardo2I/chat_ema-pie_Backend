@@ -1,84 +1,59 @@
-// import 'package:aws_client/dynamo_db_2012_08_10.dart';
-// import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
-// import 'package:aws_lambda_dart_runtime/runtime/context.dart';
-// import 'package:dart_template/handlers/models/DTO/LobbyPutRequest.dart';
-// import 'package:dart_template/marshall.dart';
-// import 'dart:convert';
-// import 'package:dart_template/handlers/models/User.dart';
+import 'package:aws_client/dynamo_db_2012_08_10.dart';
+import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
+import 'package:aws_lambda_dart_runtime/runtime/context.dart';
+import 'package:dart_template/handlers/models/DTO/LobbyPutRequest.dart';
+import 'package:dart_template/handlers/models/Lobby.dart';
+import 'package:dart_template/marshall.dart';
+import 'dart:convert';
+import 'package:nanoid/nanoid.dart';
 
-// Future<AwsApiGatewayResponse> putUser(
-//   Context context,
-//   AwsApiGatewayEvent event,
-// ) async {
-//   final corsHeaders = {
-//     'Access-Control-Allow-Origin': '*',
-//     'Access-Control-Allow-Headers': 'Content-Type,Content-Encoding',
-//     'Access-Control-Allow-Methods': 'OPTIONS,PUT,POST,GET',
-//   };
+Future<AwsApiGatewayResponse> putUser(
+  Context context,
+  AwsApiGatewayEvent event,
+) async {
+  final corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type,Content-Encoding',
+    'Access-Control-Allow-Methods': 'OPTIONS,PUT,POST,GET',
+  };
 
-//   try {
-//     final db = DynamoDB(region: context.region!);
+  try {
+    final db = DynamoDB(region: context.region!);
 
-//     final request = LobbyPutRequest.fromJson(jsonDecode(event.body!));
+    final request = LobbyPutRequest.fromJson(jsonDecode(event.body!));
 
-//     final lobbyID = nanoid();
+    final lobbyID = nanoid();
 
-//     final existingUser = await db.query(
-//       tableName: "chat-users",
-//       indexName: "email-index",
-//       keyConditionExpression: "email = :email",
-//       expressionAttributeValues: {
-//         ":email": AttributeValue(s: request.email),
-//       },
-//     );
+    final newLobby =
+        Lobby(lobbyID: lobbyID, name: request.name, userIDs: request.userIDs);
 
-//     if (existingUser.items != null && existingUser.items!.isNotEmpty) {
-//       return AwsApiGatewayResponse(
-//         statusCode: 409,
-//         body: jsonEncode({
-//           "status": "ko",
-//           "content": "Email già esistente. Usa un'altra email.",
-//         }),
-//         headers: corsHeaders,
-//       );
-//     }
+    await db.putItem(
+      item: marshall(newLobby.toJson()),
+      tableName: "chat-lobbies",
+    );
 
-//     final newUser = User(
-//       userID: request.userID,
-//       email: request.email,
-//       avatarImage: request.avatarImage ??
-//           "https://chat-avatar-bucket.s3.eu-west-2.amazonaws.com/image/placeholder.jpg",
-//     );
+    return AwsApiGatewayResponse(
+      statusCode: 200,
+      body: jsonEncode({
+        "status": "ok",
+        "content": "Utente inserito correttamente",
+      }),
+      headers: corsHeaders,
+    );
+  } catch (error, stacktrace) {
+    print("Error: $error");
+    print("stacktrace $stacktrace");
 
-//     await db.putItem(
-//       item: marshall(newUser.toJson()),
-//       tableName: "chat-users",
-//     );
-
-//     return AwsApiGatewayResponse(
-//       statusCode: 200,
-//       body: jsonEncode({
-//         "status": "ok",
-//         "content": "Utente inserito correttamente",
-//       }),
-//       headers: corsHeaders,
-//     );
-//   } catch (error, stacktrace) {
-//     print("Error: $error");
-//     print("stacktrace $stacktrace");
-
-//     return AwsApiGatewayResponse(
-//       statusCode: 500,
-//       body: jsonEncode({
-//         "status": "ko",
-//         "content": {
-//           "error": error.toString(),
-//           "stacktrace": stacktrace.toString(),
-//         },
-//       }),
-//       headers: corsHeaders,
-//     );
-//   }
-// }
-
-// void nanoid() {}
+    return AwsApiGatewayResponse(
+      statusCode: 500,
+      body: jsonEncode({
+        "status": "ko",
+        "content": {
+          "error": error.toString(),
+          "stacktrace": stacktrace.toString(),
+        },
+      }),
+      headers: corsHeaders,
+    );
+  }
+}
