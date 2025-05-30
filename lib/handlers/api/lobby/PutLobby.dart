@@ -24,8 +24,10 @@ Future<AwsApiGatewayResponse> putLobby(
 
     final lobbyID = nanoid();
 
-    final newLobby =
-        Lobby(lobbyID: lobbyID, name: request.name, userIDs: request.userIDs);
+    final newLobby = Lobby(
+        lobbyID: lobbyID,
+        name: request.name,
+        userIDs: (request.userIDs).toList());
 
     await db.putItem(
       item: marshall(newLobby.toJson()),
@@ -36,7 +38,7 @@ Future<AwsApiGatewayResponse> putLobby(
       statusCode: 200,
       body: jsonEncode({
         "status": "ok",
-        "content": "Utente inserito correttamente",
+        "content": "Lobby creata con successo",
       }),
       headers: corsHeaders,
     );
