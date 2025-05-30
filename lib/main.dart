@@ -2,6 +2,7 @@
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:dart_template/handlers/api/iot/iot_connection.dart';
 import 'package:dart_template/handlers/api/user/GetUser.dart';
+import 'package:dart_template/handlers/api/user/PatchUser.dart';
 import 'package:dart_template/handlers/api/user/PutUser.dart';
 
 void main() async {
@@ -9,5 +10,6 @@ void main() async {
     ..registerHandler<AwsApiGatewayEvent>("main.putUser", putUser)
     ..registerHandler<AwsApiGatewayEvent>("main.getUser", getUser)
     ..registerHandler<AwsApiGatewayEvent>("main.iotConnection", iotConnection)
+    ..registerHandler<AwsApiGatewayEvent>("main.patchUserLobbies", patchUser)
     ..invoke();
 }
