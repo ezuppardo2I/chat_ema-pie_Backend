@@ -56,6 +56,21 @@ functions:
         Resource:
           - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
 
+  patchUser:
+    handler: main.patchUser
+    events:
+      - http:
+          cors: true
+          path: /user
+          method: PATCH
+
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:UpdateItem
+        Resource:
+          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
+
   connectToIoT:
     handler: main.iotConnection
     events:
