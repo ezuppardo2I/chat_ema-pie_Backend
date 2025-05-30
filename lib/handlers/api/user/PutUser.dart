@@ -31,8 +31,13 @@ Future<AwsApiGatewayResponse> putUser(
     );
 
     if (existingUser.items != null && existingUser.items!.isNotEmpty) {
-      throw Exception(
-        "Un utente con questa email esiste già, per favore usa un'altra email.",
+      return AwsApiGatewayResponse(
+        statusCode: 409,
+        body: jsonEncode({
+          "status": "ko",
+          "content": "Email già esistente. Usa un'altra email.",
+        }),
+        headers: corsHeaders,
       );
     }
 
@@ -42,27 +47,34 @@ Future<AwsApiGatewayResponse> putUser(
       avatarImage: request.avatarImage ??
           "https://chat-avatar-bucket.s3.eu-west-2.amazonaws.com/image/placeholder.jpg",
     );
+
     await db.putItem(
       item: marshall(newUser.toJson()),
       tableName: "chat-users",
     );
 
-    return AwsApiGatewayResponse.fromJson({
-      "status": "ok",
-      "content": "Utente inserito correttamente",
-      "headers": corsHeaders,
-    });
+    return AwsApiGatewayResponse(
+      statusCode: 200,
+      body: jsonEncode({
+        "status": "ok",
+        "content": "Utente inserito correttamente",
+      }),
+      headers: corsHeaders,
+    );
   } catch (error, stacktrace) {
     print("Error: $error");
     print("stacktrace $stacktrace");
 
-    return AwsApiGatewayResponse.fromJson({
-      "status": "ko",
-      "content": {
-        "error": error.toString(),
-        "stacktrace": stacktrace.toString()
-      },
-      "headers": corsHeaders,
-    });
+    return AwsApiGatewayResponse(
+      statusCode: 500,
+      body: jsonEncode({
+        "status": "ko",
+        "content": {
+          "error": error.toString(),
+          "stacktrace": stacktrace.toString(),
+        },
+      }),
+      headers: corsHeaders,
+    );
   }
 }
