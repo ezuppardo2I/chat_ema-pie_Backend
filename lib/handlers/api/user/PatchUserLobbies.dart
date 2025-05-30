@@ -5,7 +5,7 @@ import 'package:dart_template/handlers/models/DTO/UserPatchRequest.dart';
 import 'package:dart_template/marshall.dart';
 import 'dart:convert';
 
-Future<AwsApiGatewayResponse> patchUser(
+Future<AwsApiGatewayResponse> patchUserLobbies(
   Context context,
   AwsApiGatewayEvent event,
 ) async {
@@ -23,16 +23,11 @@ Future<AwsApiGatewayResponse> patchUser(
     await db.updateItem(
       key: marshall({"userId": request.userID}),
       tableName: "chat-users",
-      updateExpression:
-          "SET #email = :email, #avatarImage = :avatarImage, lobbiesIDs = :lobbiesIDs",
+      updateExpression: "SET lobbiesIDs = :lobbiesIDs",
       expressionAttributeNames: {
-        "#email": "email",
-        "#avatarImage": "avatarImage",
         "lobbiesIDs": "lobbiesIDs",
       },
       expressionAttributeValues: marshall({
-        ":email": request.email,
-        ":avatarImage": request.avatarImage,
         ":lobbiesIDs": request.lobbiesIDs,
       }),
     );

@@ -6,6 +6,7 @@ import 'package:dart_template/handlers/api/lobby/PutLobby.dart';
 import 'package:dart_template/handlers/api/user/GetUser.dart';
 import 'package:dart_template/handlers/api/user/GetUsers.dart';
 import 'package:dart_template/handlers/api/user/PatchUser.dart';
+import 'package:dart_template/handlers/api/user/PatchUserLobbies.dart';
 import 'package:dart_template/handlers/api/user/PutUser.dart';
 
 void main() async {
@@ -14,7 +15,9 @@ void main() async {
     ..registerHandler<AwsApiGatewayEvent>("main.getUser", getUser)
     ..registerHandler<AwsApiGatewayEvent>("main.getUsers", getUsers)
     ..registerHandler<AwsApiGatewayEvent>("main.iotConnection", iotConnection)
-    ..registerHandler<AwsApiGatewayEvent>("main.patchUserLobbies", patchUser)
+    ..registerHandler<AwsApiGatewayEvent>("main.patchUser", patchUser)
+    ..registerHandler<AwsApiGatewayEvent>(
+        "main.patchUserLobbies", patchUserLobbies)
     ..registerHandler<AwsApiGatewayEvent>("main.putLobby", putLobby)
     ..registerHandler<AwsApiGatewayEvent>("main.getLobby", getLobby)
     ..invoke();
