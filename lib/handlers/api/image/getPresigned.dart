@@ -14,13 +14,15 @@ Future<AwsApiGatewayResponse> getPresigned(
     'Access-Control-Allow-Methods': 'OPTIONS,PUT,POST,GET',
   };
   try {
+    final userID = event.pathParameters?['userID'];
+
     final s3 = S3Storage(
         endPoint: "s3.amazonaws.com",
         accessKey: context.accessKey!,
         secretKey: context.secretAccessKey!,
         sessionToken: context.sessionToken!,
         region: context.region!);
-    final url = await s3.presignedPutObject("chat-avatar-bucket", "/image");
+    final url = await s3.presignedPutObject("chat-avatar-bucket", "/$userID");
 
     return AwsApiGatewayResponse(
         statusCode: 200,

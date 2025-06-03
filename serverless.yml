@@ -187,7 +187,7 @@ functions:
     handler: main.getPresigned
     events:
       - http:
-          path: /imageurl
+          path: /imageurl/{userID}
           method: GET
           cors:
             origin: "*"
