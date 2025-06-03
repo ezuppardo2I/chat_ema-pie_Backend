@@ -19,7 +19,9 @@ Future<AwsApiGatewayResponse> getPresigned(
     final s3 = S3Storage(
         endPoint: "s3.amazonaws.com",
         accessKey: context.accessKey!,
-        secretKey: context.secretAccessKey!);
+        secretKey: context.secretAccessKey!,
+        sessionToken: context.sessionToken!,
+        region: context.region!);
     final url = await s3.presignedPutObject("chat-avatar-bucket", "/image");
 
     return AwsApiGatewayResponse(
