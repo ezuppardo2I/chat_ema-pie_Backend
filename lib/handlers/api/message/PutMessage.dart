@@ -2,11 +2,10 @@ import 'package:aws_client/dynamo_db_2012_08_10.dart';
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
 import 'package:dart_template/handlers/models/DTO/MessagePutRequest.dart';
-import 'package:dart_template/handlers/models/DTO/UserPutRequest.dart';
 import 'package:dart_template/handlers/models/Message.dart';
 import 'package:dart_template/marshall.dart';
 import 'dart:convert';
-import 'package:dart_template/handlers/models/User.dart';
+import 'package:nanoid/nanoid.dart';
 
 Future<AwsApiGatewayResponse> putMessage(
   Context context,
@@ -23,9 +22,11 @@ Future<AwsApiGatewayResponse> putMessage(
 
     final request = MessagePutRequest.fromJson(jsonDecode(event.body!));
 
+    String messageID = nanoid();
+
     final newMessage = Message(
         lobbyID: request.lobbyID,
-        messageID: request.messageID,
+        messageID: messageID,
         userID: request.userID,
         messageText: request.messageText);
 
