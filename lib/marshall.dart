@@ -15,8 +15,6 @@ AttributeValue getMapValue(dynamic value) {
     return AttributeValue(b: value);
   } else if (value is List<Uint8List>) {
     return AttributeValue(bs: value);
-  } else if (value is List<String>) {
-    return AttributeValue(ss: value);
   } else if (value is List<num>) {
     return AttributeValue(ns: value.map((e) => e.toString()).toList());
   } else if (value is List) {
