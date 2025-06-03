@@ -5,7 +5,7 @@ import 'package:aws_lambda_dart_runtime/runtime/context.dart';
 import 'package:dart_template/marshall.dart';
 import 'package:dart_template/unmarshal.dart';
 
-Future<AwsApiGatewayResponse> getUsers(
+Future<AwsApiGatewayResponse> getMessages(
   Context context,
   AwsApiGatewayEvent event,
 ) async {
@@ -18,16 +18,23 @@ Future<AwsApiGatewayResponse> getUsers(
   try {
     final db = DynamoDB(region: context.region!);
 
-    final lastEvalueted = event.queryStringParameters?['lastEvalueted'];
+    final lobbyID = event.pathParameters?['lobbyID'];
 
-    final results = await db.scan(
-        tableName: "chat-messages",
-        limit: 50,
-        exclusiveStartKey:
-            lastEvalueted != null ? marshall({"userID": lastEvalueted}) : null);
+    final lastEvaluated = event.queryStringParameters?['lastEvaluated'];
+
+    final existingMessages = await db.query(
+      tableName: "chat-messages",
+      keyConditionExpression: "lobbyID = :lobbyID",
+      expressionAttributeValues: marshall({":lobbyID": lobbyID}),
+      limit: 50,
+      exclusiveStartKey: lastEvaluated != null
+          ? marshall({"messageID": lastEvaluated, "lobbyID": lobbyID})
+          : null,
+      scanIndexForward: false,
+    );
 
     final messages =
-        results.items?.map((item) => unmarshal(item)).toList() ?? [];
+        existingMessages.items?.map((item) => unmarshal(item)).toList() ?? [];
 
     return AwsApiGatewayResponse(
       statusCode: 200,

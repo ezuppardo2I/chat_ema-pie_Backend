@@ -25,9 +25,7 @@ Future<AwsApiGatewayResponse> putUser(
       tableName: "chat-users",
       indexName: "email-index",
       keyConditionExpression: "email = :email",
-      expressionAttributeValues: {
-        ":email": AttributeValue(s: request.email),
-      },
+      expressionAttributeValues: marshall({":email": request.email}),
     );
 
     if (existingUser.items != null && existingUser.items!.isNotEmpty) {

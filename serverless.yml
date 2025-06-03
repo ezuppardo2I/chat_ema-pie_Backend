@@ -164,3 +164,21 @@ functions:
           - dynamodb:GetItem
         Resource:
           - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-lobbies
+
+  getMessages:
+    handler: main.getMessages
+    events:
+      - http:
+          path: /message/{lobbyID}
+          method: GET
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - Content-Encoding
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:Query
+        Resource:
+          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-messages

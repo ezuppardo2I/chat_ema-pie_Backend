@@ -3,6 +3,8 @@ import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:dart_template/handlers/api/iot/iot_connection.dart';
 import 'package:dart_template/handlers/api/lobby/GetLobby.dart';
 import 'package:dart_template/handlers/api/lobby/PutLobby.dart';
+import 'package:dart_template/handlers/api/message/GetMessages.dart';
+import 'package:dart_template/handlers/api/message/PutMessage.dart';
 import 'package:dart_template/handlers/api/user/GetUser.dart';
 import 'package:dart_template/handlers/api/user/GetUsers.dart';
 import 'package:dart_template/handlers/api/user/PatchUser.dart';
@@ -20,5 +22,7 @@ void main() async {
         "main.patchUserLobbies", patchUserLobbies)
     ..registerHandler<AwsApiGatewayEvent>("main.putLobby", putLobby)
     ..registerHandler<AwsApiGatewayEvent>("main.getLobby", getLobby)
+    ..registerHandler<AwsApiGatewayEvent>("main.putMessage", putMessage)
+    ..registerHandler<AwsApiGatewayEvent>("main.getMessages", getMessages)
     ..invoke();
 }
