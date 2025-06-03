@@ -4,13 +4,11 @@ part 'MessagePutRequest.g.dart';
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class MessagePutRequest {
-  String messageID;
   String userID;
   String lobbyID;
   String messageText;
 
   MessagePutRequest({
-    required this.messageID,
     required this.userID,
     required this.lobbyID,
     required this.messageText,
