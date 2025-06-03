@@ -5,10 +5,9 @@ part 'User.g.dart';
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class User {
   String userID;
-
   String email;
   String? avatarImage;
-  Set<String>? lobbiesIDs;
+  List<String>? lobbiesIDs;
 
   User({
     required this.userID,

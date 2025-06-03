@@ -7,7 +7,7 @@ class UserPatchRequest {
   String userID;
   String email;
   String avatarImage;
-  Set<String> lobbiesIDs;
+  List<String> lobbiesIDs;
 
   UserPatchRequest({
     required this.userID,

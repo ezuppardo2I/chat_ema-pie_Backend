@@ -2,7 +2,6 @@ import 'package:aws_client/dynamo_db_2012_08_10.dart';
 import 'package:aws_lambda_dart_runtime/aws_lambda_dart_runtime.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
 import 'package:dart_template/handlers/models/DTO/UserPatchLobbiesRequest.dart';
-import 'package:dart_template/marshall.dart';
 import 'dart:convert';
 
 Future<AwsApiGatewayResponse> patchUserLobbies(
@@ -20,20 +19,37 @@ Future<AwsApiGatewayResponse> patchUserLobbies(
 
     final request = UserPatchLobbiesRequest.fromJson(jsonDecode(event.body!));
 
+    if (request.lobbiesIDs.isEmpty) {
+      return AwsApiGatewayResponse(
+        statusCode: 400,
+        body: jsonEncode({
+          "status": "ko",
+          "content": "La lista delle lobby non può essere vuota",
+        }),
+        headers: corsHeaders,
+      );
+    }
+
     await db.updateItem(
-      key: marshall({"userId": request.userID}),
+      key: {
+        "userId": AttributeValue(s: request.userID),
+      },
       tableName: "chat-users",
-      updateExpression: "ADD lobbiesIDs :new_lobbies",
-      expressionAttributeValues: marshall({
-        ":new_lobbies": request.lobbiesIDs,
-      }),
+      updateExpression:
+          "SET lobbiesIDs = list_append(if_not_exists(lobbiesIDs, :empty_list), :new_lobbies)",
+      expressionAttributeValues: {
+        ":new_lobbies": AttributeValue(
+          l: request.lobbiesIDs.map((id) => AttributeValue(s: id)).toList(),
+        ),
+        ":empty_list": AttributeValue(l: []),
+      },
     );
 
     return AwsApiGatewayResponse(
       statusCode: 200,
       body: jsonEncode({
         "status": "ok",
-        "content": "Utente editato correttamente",
+        "content": "Lobbies aggiunte correttamente",
       }),
       headers: corsHeaders,
     );
