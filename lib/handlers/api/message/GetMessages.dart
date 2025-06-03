@@ -30,7 +30,7 @@ Future<AwsApiGatewayResponse> getMessages(
       exclusiveStartKey: lastEvaluated != null
           ? marshall({"messageID": lastEvaluated, "lobbyID": lobbyID})
           : null,
-      scanIndexForward: false,
+      scanIndexForward: true,
     );
 
     final messages =
