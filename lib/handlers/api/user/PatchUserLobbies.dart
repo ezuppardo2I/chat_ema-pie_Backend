@@ -4,6 +4,8 @@ import 'package:aws_lambda_dart_runtime/runtime/context.dart';
 import 'package:dart_template/handlers/models/DTO/UserPatchLobbiesRequest.dart';
 import 'dart:convert';
 
+import 'package:dart_template/marshall.dart';
+
 Future<AwsApiGatewayResponse> patchUserLobbies(
   Context context,
   AwsApiGatewayEvent event,
@@ -31,18 +33,14 @@ Future<AwsApiGatewayResponse> patchUserLobbies(
     }
 
     await db.updateItem(
-      key: {
-        "userId": AttributeValue(s: request.userID),
-      },
+      key: marshall({"userID": request.userID}),
       tableName: "chat-users",
       updateExpression:
           "SET lobbiesIDs = list_append(if_not_exists(lobbiesIDs, :empty_list), :new_lobbies)",
-      expressionAttributeValues: {
-        ":new_lobbies": AttributeValue(
-          l: request.lobbiesIDs.map((id) => AttributeValue(s: id)).toList(),
-        ),
-        ":empty_list": AttributeValue(l: []),
-      },
+      expressionAttributeValues: marshall({
+        ":new_lobbies": request.lobbiesIDs,
+        ":empty_list": [],
+      }),
     );
 
     return AwsApiGatewayResponse(
