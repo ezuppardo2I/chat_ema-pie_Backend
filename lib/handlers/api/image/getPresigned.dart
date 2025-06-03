@@ -22,7 +22,7 @@ Future<AwsApiGatewayResponse> getPresigned(
         secretKey: context.secretAccessKey!,
         sessionToken: context.sessionToken!,
         region: context.region!);
-    final url = await s3.presignedPutObject("chat-avatar-bucket", "/$userID");
+    final url = await s3.presignedPutObject("chat-avatar-bucket", "$userID");
 
     return AwsApiGatewayResponse(
         statusCode: 200,
