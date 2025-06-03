@@ -182,3 +182,21 @@ functions:
           - dynamodb:Query
         Resource:
           - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-messages
+
+  getPresigned:
+    handler: main.getPresigned
+    events:
+      - http:
+          path: /imageurl/{userID}
+          method: GET
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - Content-Encoding
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::chat-avatar-bucket
