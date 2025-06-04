@@ -24,16 +24,18 @@ Future<AwsApiGatewayResponse> patchUser(
       key: marshall({"userId": request.userID}),
       tableName: "chat-users",
       updateExpression:
-          "SET #email = :email, #avatarImage = :avatarImage, lobbiesIDs = :lobbiesIDs",
+          "SET #email = :email, #avatarImage = :avatarImage, #lobbiesIDs = :lobbiesIDs, #username = :username",
       expressionAttributeNames: {
         "#email": "email",
         "#avatarImage": "avatarImage",
-        "lobbiesIDs": "lobbiesIDs",
+        "#lobbiesIDs": "lobbiesIDs",
+        "#username": "username"
       },
       expressionAttributeValues: marshall({
         ":email": request.email,
         ":avatarImage": request.avatarImage,
         ":lobbiesIDs": request.lobbiesIDs,
+        ":username": request.username,
       }),
     );
 

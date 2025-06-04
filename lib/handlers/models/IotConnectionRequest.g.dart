@@ -13,8 +13,15 @@ IotConnectionRequest _$IotConnectionRequestFromJson(
     );
 
 Map<String, dynamic> _$IotConnectionRequestToJson(
-        IotConnectionRequest instance) =>
-    <String, dynamic>{
-      if (instance.cognitoIdentityID case final value?)
-        'cognitoIdentityID': value,
-    };
+    IotConnectionRequest instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('cognitoIdentityID', instance.cognitoIdentityID);
+  return val;
+}

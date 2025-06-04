@@ -6,12 +6,14 @@ part 'User.g.dart';
 class User {
   String userID;
   String email;
+  String username;
   String? avatarImage;
   List<String>? lobbiesIDs;
 
   User({
     required this.userID,
     required this.email,
+    required this.username,
     this.avatarImage,
     this.lobbiesIDs,
   });

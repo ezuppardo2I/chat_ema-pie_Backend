@@ -6,12 +6,14 @@ part 'UserPatchRequest.g.dart';
 class UserPatchRequest {
   String userID;
   String email;
+  String username;
   String avatarImage;
   List<String> lobbiesIDs;
 
   UserPatchRequest({
     required this.userID,
     required this.email,
+    required this.username,
     required this.avatarImage,
     required this.lobbiesIDs,
   });
