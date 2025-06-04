@@ -40,7 +40,7 @@ Future<AwsApiGatewayResponse> putMessage(
       statusCode: 200,
       body: jsonEncode({
         "status": "ok",
-        "content": "Messaggio inserito correttamente",
+        "content": newMessage.toJson(),
       }),
       headers: corsHeaders,
     );
