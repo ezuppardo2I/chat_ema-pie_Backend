@@ -28,7 +28,8 @@ Future<AwsApiGatewayResponse> putMessage(
         lobbyID: request.lobbyID,
         messageID: messageID,
         userID: request.userID,
-        messageText: request.messageText);
+        messageText: request.messageText,
+        timestamp: DateTime.now().toUtc().toIso8601String());
 
     await db.putItem(
       item: marshall(newMessage.toJson()),

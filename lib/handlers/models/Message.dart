@@ -8,12 +8,14 @@ class Message {
   String userID;
   String lobbyID;
   String messageText;
+  String timestamp;
 
   Message({
     required this.messageID,
     required this.userID,
     required this.lobbyID,
     required this.messageText,
+    required this.timestamp,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) =>

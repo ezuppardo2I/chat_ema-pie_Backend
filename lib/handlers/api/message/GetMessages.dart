@@ -24,13 +24,14 @@ Future<AwsApiGatewayResponse> getMessages(
 
     final existingMessages = await db.query(
       tableName: "chat-messages",
+      indexName: "lobbyID-timestamp-index",
       keyConditionExpression: "lobbyID = :lobbyID",
       expressionAttributeValues: marshall({":lobbyID": lobbyID}),
       limit: 50,
       exclusiveStartKey: lastEvaluated != null
-          ? marshall({"messageID": lastEvaluated, "lobbyID": lobbyID})
+          ? marshall({"lobbyID": lobbyID, "timestamp": lastEvaluated})
           : null,
-      scanIndexForward: true,
+      scanIndexForward: false,
     );
 
     final messages =

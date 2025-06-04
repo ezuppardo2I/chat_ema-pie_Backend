@@ -11,6 +11,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) => Message(
       userID: json['userID'] as String,
       lobbyID: json['lobbyID'] as String,
       messageText: json['messageText'] as String,
+      timestamp: json['timestamp'] as String,
     );
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
@@ -18,4 +19,5 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'userID': instance.userID,
       'lobbyID': instance.lobbyID,
       'messageText': instance.messageText,
+      'timestamp': instance.timestamp,
     };
