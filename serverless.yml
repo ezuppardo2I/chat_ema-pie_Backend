@@ -181,7 +181,7 @@ functions:
         Action:
           - dynamodb:Query
         Resource:
-          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-messages
+          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-messages/index/lobbyID-timestamp-index
 
   getPresigned:
     handler: main.getPresigned
