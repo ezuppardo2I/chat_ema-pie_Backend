@@ -199,4 +199,4 @@ functions:
         Action:
           - s3:PutObject
         Resource:
-          - arn:aws:s3:::chat-avatar-bucket
+          - arn:aws:s3:::chat-avatar-bucket/*
