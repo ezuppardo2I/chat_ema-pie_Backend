@@ -21,22 +21,18 @@ custom:
     number: 3
 
 functions:
-  putUser:
-    handler: main.putUser
+  putUserTrigger:
+    handler: trigger.putUserTrigger
     events:
-      - http:
-          cors: true
-          path: /user
-          method: PUT
-
+      - cognitoUserPool:
+          pool: chat-user-pool
+          trigger: PostConfirmation
     iamRoleStatements:
       - Effect: "Allow"
         Action:
           - dynamodb:PutItem
-          - dynamodb:Query
         Resource:
           - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users
-          - arn:aws:dynamodb:eu-west-2:737830503619:table/chat-users/index/email-index
 
   getUser:
     handler: main.getUser
