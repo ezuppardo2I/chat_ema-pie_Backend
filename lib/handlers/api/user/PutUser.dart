@@ -4,7 +4,7 @@ import 'package:dart_template/handlers/models/PostConfirmationTriggerEvent.dart'
 import 'package:dart_template/handlers/models/User.dart';
 import 'package:dart_template/marshall.dart';
 
-Future<void> putUser(
+Future<Map<String, dynamic>> putUser(
     Context context, PostConfirmationTriggerEvent event) async {
   try {
     final userAttributes = event.request['userAttributes'];
@@ -25,8 +25,17 @@ Future<void> putUser(
       item: marshall(newUser.toJson()),
       tableName: 'chat-users',
     );
+
+    return {
+      'status': 'success',
+      'message': 'User saved successfully',
+    };
   } catch (e, st) {
     print('Errore: $e');
     print('Stacktrace: $st');
+    return {
+      'status': 'error',
+      'message': e.toString(),
+    };
   }
 }
