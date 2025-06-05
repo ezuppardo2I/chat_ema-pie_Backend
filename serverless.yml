@@ -21,8 +21,8 @@ custom:
     number: 3
 
 functions:
-  putUserTrigger:
-    handler: trigger.putUserTrigger
+  putUser:
+    handler: main.putUser
     events:
       - cognitoUserPool:
           pool: chat-user-pool

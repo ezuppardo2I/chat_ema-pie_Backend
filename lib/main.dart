@@ -14,7 +14,7 @@ import 'package:dart_template/handlers/api/user/PutUser.dart';
 
 void main() async {
   Runtime()
-    ..registerHandler<Map<String, dynamic>>("trigger.putUser", putUser)
+    ..registerHandler<Map<String, dynamic>>("main.putUser", putUser)
     ..registerHandler<AwsApiGatewayEvent>("main.getUser", getUser)
     ..registerHandler<AwsApiGatewayEvent>("main.getUsers", getUsers)
     ..registerHandler<AwsApiGatewayEvent>("main.iotConnection", iotConnection)
