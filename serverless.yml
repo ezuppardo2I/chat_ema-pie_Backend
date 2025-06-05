@@ -23,10 +23,6 @@ custom:
 functions:
   putUser:
     handler: main.putUser
-    events:
-      - cognitoUserPool:
-          pool: chat_ema-pie_userPool
-          trigger: PostConfirmation
     iamRoleStatements:
       - Effect: "Allow"
         Action:
