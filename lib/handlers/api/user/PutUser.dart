@@ -1,11 +1,13 @@
 import 'package:aws_client/dynamo_db_2012_08_10.dart';
 import 'package:aws_lambda_dart_runtime/runtime/context.dart';
+import 'package:dart_template/handlers/models/PostConfirmationTriggerEvent.dart';
 import 'package:dart_template/handlers/models/User.dart';
 import 'package:dart_template/marshall.dart';
 
-Future<void> putUser(Context context, Map<String, dynamic> event) async {
+Future<void> putUser(
+    Context context, PostConfirmationTriggerEvent event) async {
   try {
-    final userAttributes = event['request']['userAttributes'];
+    final userAttributes = event.request['userAttributes'];
 
     print(userAttributes);
 

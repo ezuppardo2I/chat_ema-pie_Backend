@@ -11,10 +11,18 @@ import 'package:dart_template/handlers/api/user/GetUsers.dart';
 import 'package:dart_template/handlers/api/user/PatchUser.dart';
 import 'package:dart_template/handlers/api/user/PatchUserLobbies.dart';
 import 'package:dart_template/handlers/api/user/PutUser.dart';
+import 'package:dart_template/handlers/models/PostConfirmationTriggerEvent.dart';
 
 void main() async {
-  Runtime()
-    ..registerHandler<Map<String, dynamic>>("main.putUser", putUser)
+  final runtime = Runtime();
+
+  runtime
+      .registerEvent<PostConfirmationTriggerEvent>((Map<String, dynamic> json) {
+    return PostConfirmationTriggerEvent.fromJson(json);
+  });
+
+  runtime
+    ..registerHandler<PostConfirmationTriggerEvent>("main.putUser", putUser)
     ..registerHandler<AwsApiGatewayEvent>("main.getUser", getUser)
     ..registerHandler<AwsApiGatewayEvent>("main.getUsers", getUsers)
     ..registerHandler<AwsApiGatewayEvent>("main.iotConnection", iotConnection)
