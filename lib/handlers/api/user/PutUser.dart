@@ -26,16 +26,11 @@ Future<Map<String, dynamic>> putUser(
       tableName: 'chat-users',
     );
 
-    return {
-      'status': 'success',
-      'message': 'User saved successfully',
-    };
+    return event.toJson();
   } catch (e, st) {
     print('Errore: $e');
     print('Stacktrace: $st');
-    return {
-      'status': 'error',
-      'message': e.toString(),
-    };
+
+    return event.toJson();
   }
 }
