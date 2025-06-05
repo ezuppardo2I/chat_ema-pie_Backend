@@ -7,6 +7,8 @@ Future<void> putUser(Context context, Map<String, dynamic> event) async {
   try {
     final userAttributes = event['request']['userAttributes'];
 
+    print(userAttributes);
+
     final newUser = User(
       userID: userAttributes['sub'],
       email: userAttributes['email'],
