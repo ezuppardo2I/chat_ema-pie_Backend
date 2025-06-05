@@ -10,7 +10,7 @@ Future<void> putUser(Context context, Map<String, dynamic> event) async {
     final newUser = User(
       userID: userAttributes['sub'],
       email: userAttributes['email'],
-      username: userAttributes['username'],
+      username: userAttributes['custom:username'],
       avatarImage:
           "https://chat-avatar-bucket.s3.eu-west-2.amazonaws.com/image/placeholder.jpg",
       lobbiesIDs: [],
