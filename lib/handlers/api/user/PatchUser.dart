@@ -21,7 +21,7 @@ Future<AwsApiGatewayResponse> patchUser(
     final request = UserPatchRequest.fromJson(jsonDecode(event.body!));
 
     await db.updateItem(
-      key: marshall({"userId": request.userID}),
+      key: marshall({"userID": request.userID}),
       tableName: "chat-users",
       updateExpression:
           "SET #email = :email, #avatarImage = :avatarImage, #lobbiesIDs = :lobbiesIDs, #username = :username",
